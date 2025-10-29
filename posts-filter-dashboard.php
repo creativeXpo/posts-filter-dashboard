@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Posts Filter Example
+ * Plugin Name: posts-filter-dashboard
  * Description: Demonstrates how to apply filters via query parameters in the admin area.
  * Version: 1.0
  * Author: ChatGPT
@@ -16,10 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'admin_menu', function() {
     add_menu_page(
-        'Posts Filter Example',
-        'Posts Filter Example',
+        'Posts Filter Dashboard',
+        'Posts Filter Dashboard',
         'manage_options',
-        'posts-filter-example',
+        'posts-filter-dashboard',
         'pfe_render_admin_page',
         'dashicons-filter',
         20
@@ -29,10 +29,10 @@ add_action( 'admin_menu', function() {
 function pfe_render_admin_page() {
     ?>
     <div class="wrap">
-        <h1>Posts Filter Example</h1>
+        <h1>Posts Filter Dashboard</h1>
 
         <form method="get">
-            <input type="hidden" name="page" value="posts-filter-example" />
+            <input type="hidden" name="page" value="posts-filter-dashboard" />
 
             <label for="status">Status:</label>
             <select name="status" id="status">
