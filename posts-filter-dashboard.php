@@ -3,57 +3,83 @@
  * Plugin Name: posts-filter-dashboard
  * Description: Demonstrates how to apply filters via query parameters in the admin area.
  * Version: 1.0
- * Author: ChatGPT
+ * Author: Golam Kibria
  */
 
 // Exit if accessed directly.
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+    exit; // Exit if accessed directly.
 }
 
-// Add admin menu page
+class Posts_Filter_Dashboard {
 
-add_action( 'admin_menu', function() {
-    add_menu_page(
-        'Posts Filter Dashboard',
-        'Posts Filter Dashboard',
-        'manage_options',
-        'posts-filter-dashboard',
-        'pfe_render_admin_page',
-        'dashicons-filter',
-        20
-    );
-});
+    /**
+     * Constructor: Hook into admin menu.
+     */
+    public function __construct() {
+        add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );
+    }
 
-function pfe_render_admin_page() {
-    ?>
-    <div class="wrap">
-        <h1>Posts Filter Dashboard</h1>
+    /**
+     * Add custom admin menu page.
+     */
 
-        <form method="get">
-            <input type="hidden" name="page" value="posts-filter-dashboard" />
+    public function add_admin_menu() {
+        add_menu_page(
+            'Posts Filter Dashboard',
+            'Posts Filter Dashboard',
+            'manage_options',
+            'posts-filter-dashboard',
+            [ $this, 'render_admin_page' ],
+            'dashicons-filter',
+            20
+        );
+    }
 
-            <label for="status">Status:</label>
-            <select name="status" id="status">
-                <option value="">All</option>
-                <option value="publish" <?php selected($_GET['status'] ?? '', 'publish'); ?>>Published</option>
-                <option value="draft" <?php selected($_GET['status'] ?? '', 'draft'); ?>>Draft</option>
-                <option value="pending" <?php selected($_GET['status'] ?? '', 'pending'); ?>>Pending</option>
-            </select>
+    /**
+     * Render the main admin page.
+     */
 
-            <label for="author">Author ID:</label>
-            <input type="number" name="author" id="author" value="<?php echo esc_attr($_GET['author'] ?? ''); ?>" />
+    public function render_admin_page() {
+        ?>
+        <div class="wrap">
+            <h1>Posts Filter Dashboard</h1>
 
-            <button class="button button-primary" type="submit">Filter</button>
-        </form>
+            <form method="get">
+                <input type="hidden" name="page" value="posts-filter-dashboard" />
 
-        <hr>
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    <option value="">All</option>
+                    <option value="publish" <?php selected( $_GET['status'] ?? '', 'publish' ); ?>>Published</option>
+                    <option value="draft" <?php selected( $_GET['status'] ?? '', 'draft' ); ?>>Draft</option>
+                    <option value="pending" <?php selected( $_GET['status'] ?? '', 'pending' ); ?>>Pending</option>
+                </select>
 
+                <label for="author">Author ID:</label>
+                <input 
+                    type="number" 
+                    name="author" 
+                    id="author" 
+                    value="<?php echo esc_attr( $_GET['author'] ?? '' ); ?>" 
+                />
+
+                <button class="button button-primary" type="submit">Filter</button>
+            </form>
+
+            <hr>
+
+            <?php $this->display_posts_table(); ?>
+        </div>
         <?php
+    }
 
-        // Build query arguments based on query parameters
+    /**
+     * Build and execute the query, then display the results.
+     */
 
+    private function display_posts_table() {
         $args = [
             'post_type'      => 'post',
             'posts_per_page' => 10,
@@ -69,24 +95,28 @@ function pfe_render_admin_page() {
 
         $query = new WP_Query( $args );
 
-        if ( $query->have_posts() ) :
+        if ( $query->have_posts() ) {
             echo '<table class="widefat fixed striped">';
             echo '<thead><tr><th>Title</th><th>Status</th><th>Author</th></tr></thead><tbody>';
-            while ( $query->have_posts() ) : $query->the_post();
+
+            while ( $query->have_posts() ) {
+                $query->the_post();
+
                 echo '<tr>';
-                echo '<td><a href="' . get_edit_post_link() . '">' . get_the_title() . '</a></td>';
-                echo '<td>' . get_post_status() . '</td>';
-                echo '<td>' . get_the_author() . '</td>';
+                echo '<td><a href="' . esc_url( get_edit_post_link() ) . '">' . esc_html( get_the_title() ) . '</a></td>';
+                echo '<td>' . esc_html( get_post_status() ) . '</td>';
+                echo '<td>' . esc_html( get_the_author() ) . '</td>';
                 echo '</tr>';
-            endwhile;
+            }
+
             echo '</tbody></table>';
-        else :
+        } else {
             echo '<p>No posts found.</p>';
-        endif;
+        }
 
         wp_reset_postdata();
-        ?>
-    </div>
-
-    <?php
+    }
 }
+
+// Initialize the plugin.
+new Posts_Filter_Dashboard();
