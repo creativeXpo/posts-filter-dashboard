@@ -16,5 +16,3 @@ It allows you to filter posts by **status** and **author ID** from a custom admi
 
 ---
 
-## 🗂️ File Structure
-
