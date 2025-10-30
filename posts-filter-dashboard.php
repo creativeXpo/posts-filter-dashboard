@@ -116,6 +116,7 @@ class Posts_Filter_Dashboard {
 
         wp_reset_postdata();
     }
+    
 }
 
 // Initialize the plugin.
