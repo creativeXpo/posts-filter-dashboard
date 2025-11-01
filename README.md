@@ -28,3 +28,14 @@ A class named `Posts_Filter_Dashboard` wraps all plugin logic.
 Automatically hooks the `add_admin_menu()` method to WordPress:
 
 `add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );`
+
+#### Admin Menu Registration
+Adds a new admin page titled Posts Filter Dashboard under the dashboard menu.
+
+#### Render Admin Page `render_admin_page`
+- Displays a form for filtering posts.
+- Includes:
+    - Hidden page input (keeps the current page active)
+    - Dropdown to select post status
+    - Author ID input
+    - Filter button
