@@ -52,6 +52,6 @@ Adds a new admin page titled Posts Filter Dashboard under the dashboard menu.
 #### 08. Reset Query Data
 - Runs `wp_reset_postdata()` after the custom query.
 
-##### 09. Initialize Plugin
+#### 09. Initialize Plugin
 `new Posts_Filter_Dashboard();`
 This creates an instance of the class and loads everything.
