@@ -23,3 +23,7 @@ The plugin first checks if WordPress is loaded using:
 
 #### Class Definition
 A class named `Posts_Filter_Dashboard` wraps all plugin logic.
+
+#### Constructor `(__construct)`
+Automatically hooks the `add_admin_menu()` method to WordPress:
+`add_action( 'admin_menu', [ $this, 'add_admin_menu' ] );`
