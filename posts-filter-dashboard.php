@@ -62,15 +62,17 @@ class Posts_Filter_Dashboard {
                     type="number" 
                     name="author" 
                     id="author" 
-                    value="<?php echo esc_attr( $_GET['author'] ?? '' ); ?>" 
+                    value="<?php echo esc_attr( $_GET['author'] ?? '' ); ?>"
                 />
 
                 <button class="button button-primary" type="submit">Filter</button>
+
             </form>
 
             <hr>
 
             <?php $this->display_posts_table(); ?>
+
         </div>
         <?php
     }
@@ -80,6 +82,7 @@ class Posts_Filter_Dashboard {
      */
 
     private function display_posts_table() {
+
         $args = [
             'post_type'      => 'post',
             'posts_per_page' => 10,
@@ -96,10 +99,12 @@ class Posts_Filter_Dashboard {
         $query = new WP_Query( $args );
 
         if ( $query->have_posts() ) {
+
             echo '<table class="widefat fixed striped">';
             echo '<thead><tr><th>Title</th><th>Status</th><th>Author</th></tr></thead><tbody>';
 
             while ( $query->have_posts() ) {
+
                 $query->the_post();
 
                 echo '<tr>';
@@ -107,11 +112,15 @@ class Posts_Filter_Dashboard {
                 echo '<td>' . esc_html( get_post_status() ) . '</td>';
                 echo '<td>' . esc_html( get_the_author() ) . '</td>';
                 echo '</tr>';
+                
             }
 
             echo '</tbody></table>';
+
         } else {
+
             echo '<p>No posts found.</p>';
+            
         }
 
         wp_reset_postdata();
